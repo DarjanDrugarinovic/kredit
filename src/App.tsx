@@ -4,15 +4,31 @@ import BezPrevremeneOtplate from "./kredit/BezPrevremeneOtplate";
 import PrevremenaOtplataV1 from "./kredit/PrevremenaOtplataV1";
 import PrevremenaOtplataV2 from "./kredit/PrevremenaOtplataV2";
 import Poredjenje30vs40 from "./kredit/Poredjenje30vs40";
+import { izracunajRatu } from "./izracunajRatu";
 
 type Opcija = "bez" | "v1" | "v2" | "poredjenje";
+
+const GLAVNICA = 100_000;
+const GODISNJA_KAMATA = 0.0475;
+const BROJ_MESECI = 120;
 
 const App = () => {
   const [opcija, setOpcija] = useState<Opcija>("bez");
 
+  const rata = izracunajRatu(GLAVNICA, GODISNJA_KAMATA, BROJ_MESECI);
+
   return (
     <div style={{ padding: 24, fontFamily: "sans-serif" }}>
       <h2>Izbor simulacije kredita</h2>
+      <p>
+        Mesečna rata ({GLAVNICA.toLocaleString("sr-RS")},{" "}
+        {(GODISNJA_KAMATA * 100).toFixed(2)}%, {BROJ_MESECI} meseci):{" "}
+        <b>{rata.toFixed(2)}</b>
+      </p>
+      <p style={{ color: "gray", fontStyle: "italic" }}>
+        Napomena: pogledajte source kod — funkcija za računanje mesečne rate
+        nalazi se u <code>src/izracunajRatu.tsx</code>.
+      </p>
       <div style={{ display: "flex", gap: 2 }}>
         <label>
           <input
